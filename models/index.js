@@ -6,5 +6,7 @@ module.exports = {
   Hotel: require('./hotel'),
   Activity: require('./activity'),
   Restaurant: require('./restaurant'),
-  Place: require('./place')
+  Place: require('./place'),
+  Day: require('./day')
+
 };

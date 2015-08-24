@@ -2,7 +2,7 @@ var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var swig = require('swig');
-var sassMiddleware = require('node-sass-middleware'); 
+var sassMiddleware = require('node-sass-middleware');
 
 var app = express();
 
@@ -14,7 +14,9 @@ app.engine('html', swig.renderFile);
 // log and body parse
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 // frontend deps
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
@@ -44,14 +46,17 @@ app.use(function(req, res, next) {
 // handle any errors
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  console.log({error: err});
+  console.log({
+    error: err
+  });
   res.render('error', {
-  	error: err
+    error: err
   });
 });
 
+
 // listen on a port
 var port = 3000;
-app.listen(port, function () {
-	console.log('The server is listening closely on port', port);
+app.listen(port, function() {
+  console.log('The server is listening closely on port', port);
 });

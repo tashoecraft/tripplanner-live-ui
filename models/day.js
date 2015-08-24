@@ -15,3 +15,6 @@ var DaySchema = new mongoose.Schema({
     ref: 'Activity'
   }]
 });
+
+
+module.exports = mongoose.model('Day', DaySchema);
