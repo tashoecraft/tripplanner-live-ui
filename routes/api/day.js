@@ -32,8 +32,12 @@ router.post('/', function(req, res, next) {
 router.post('/:id/:instance/:name', function(req, res, next){
   var id = req.params.id;
   var instance = req.params.instance;
+  var upperInstance = instance.splice(0,1)[0].toUpperCase() + instance.join("").toLowerCase();
   var name = req.params.name;
-  Day.findOne({name: name})
+  //find the right day
+  //identify if hotel/activity/rest
+  //add to appropriate array or update hotel
+  upperInstance.findOne({name: name})
   .then(function(result){
     Day.findOne({ id: id
   }).then(function(day){
