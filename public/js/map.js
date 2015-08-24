@@ -1,40 +1,39 @@
-'use strict';
 /* global $ google */
 
-var mapModule = (function(){
+var mapModule = (function() {
 
   var exports = {},
-      map,
-      markers = [],
-      bounds = new google.maps.LatLngBounds(),
-      iconPath = {
-        hotels: '/images/lodging_0star.png',
-        restaurants: '/images/restaurant.png',
-        activities: '/images/star-3.png'
-      },
-      FScoords = new google.maps.LatLng(40.705189, -74.009209);
+    map,
+    markers = [],
+    bounds = new google.maps.LatLngBounds(),
+    iconPath = {
+      hotels: '/images/lodging_0star.png',
+      restaurants: '/images/restaurant.png',
+      activities: '/images/star-3.png'
+    },
+    FScoords = new google.maps.LatLng(40.705189, -74.009209);
 
-  function extendBounds (marker) {
+  function extendBounds(marker) {
     bounds.extend(marker.position);
     map.fitBounds(bounds);
   }
 
-  exports.drawAttraction = function (attraction) {
+  exports.drawAttraction = function(attraction) {
     var coords = attraction.place[0].location,
-        options = {
-          icon: iconPath[attraction.type],
-          position: new google.maps.LatLng(coords[0], coords[1]),
-          map: map,
-          animation: google.maps.Animation.DROP
-        },
-        marker = new google.maps.Marker(options);
+      options = {
+        icon: iconPath[attraction.type],
+        position: new google.maps.LatLng(coords[0], coords[1]),
+        map: map,
+        animation: google.maps.Animation.DROP
+      },
+      marker = new google.maps.Marker(options);
     markers.push(marker);
     extendBounds(marker);
     return marker;
   };
 
-  exports.eraseMarkers = function () {
-    markers.forEach(function(marker){
+  exports.eraseMarkers = function() {
+    markers.forEach(function(marker) {
       marker.setMap(null);
     });
     markers = [];
@@ -127,4 +126,3 @@ var mapModule = (function(){
   return exports;
 
 }());
-

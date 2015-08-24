@@ -1,18 +1,17 @@
-'use strict';
 /* global $ daysModule all_hotels all_restaurants all_activities */
 
 $(document).ready(function() {
 
   var attractionsByType = {
-    hotels:      all_hotels,
+    hotels: all_hotels,
     restaurants: all_restaurants,
-    activities:  all_activities
+    activities: all_activities
   };
 
-  function findByTypeAndId (type, id) {
+  function findByTypeAndId(type, id) {
     var attractions = attractionsByType[type],
-        selected;
-    attractions.some(function(attraction){
+      selected;
+    attractions.some(function(attraction) {
       if (attraction._id === id) {
         selected = attraction;
         selected.type = type;
@@ -24,17 +23,27 @@ $(document).ready(function() {
 
   $('#attraction-select').on('click', 'button', function() {
     var $button = $(this),
-        type = $button.data('type'),
-        attractions = attractionsByType[type],
-        id = $button.siblings('select').val();
-    daysModule.addAttraction(findByTypeAndId(type, id));
+      type = $button.data('type'),
+      attractions = attractionsByType[type],
+      id = $button.siblings('select').val();
+    var findBy = findByTypeAndId(type, id);
+    var removeLastChar = type.split("").slice(0, type.length - 1).join(
+      "");
+    $.ajax({
+      method: 'POST',
+      url: 'api/days/' + findBy._id + '/' + removeLastChar + '/' +
+        findBy.name
+    });
+    daysModule.addAttraction(findBy);
   });
 
   $('#itinerary').on('click', 'button', function() {
     var $button = $(this),
-        type = $button.data('type'),
-        id = $button.data('id');
+      type = $button.data('type'),
+      id = $button.data('id');
     daysModule.removeAttraction(findByTypeAndId(type, id));
   });
+
+
 
 });
