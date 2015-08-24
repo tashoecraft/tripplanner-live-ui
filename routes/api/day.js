@@ -44,29 +44,30 @@ router.post('/', createDay);
 
 
 
-router.post('/:id/:instance/:name', function(req, res, next) {
-  var id = req.params.id;
+router.post('/:dayNumber/:instance/:name', function(req, res, next) {
+  var dayNumber = req.params.dayNumber;
   var instance = req.params.instance;
+  // if (instance === "activitie"){
+  //   instance = "activity"
+  // }
+  console.log(dayNumber);
   var splitInstance = instance.split("");
   var upperInstance = splitInstance.splice(0, 1)[0].toUpperCase() +
     splitInstance.join(
       "").toLowerCase();
 
   var name = req.params.name;
-  keys[upperInstance].findOne({
-      name: name
-    })
-    .then(function(result) {
       Day.findOne({
-        _id: id
+        number: dayNumber
       }).then(function(day) {
         if (instance === "hotel") {
-          day.instance = result;
+          day[instance] = name;
+          day.save();
         } else {
-          day.instance.push(result);
+          day[instance].push(name);
+          day.save();
         }
       });
-    });
 });
 
 //delete a day
@@ -80,12 +81,12 @@ router.delete('/:dayNumber', function(req, res, next) {
 });
 
 // delete specific activity/restaurant/hotel
-router.delete('/:id/:instance/:name', function(req, res, next) {
-  var id = req.params.id;
+router.delete('/:dayNumber/:instance/:name', function(req, res, next) {
+  var dayNumber = req.params.dayNumber;
   var instance = req.params.instance;
   var name = req.params.name;
   Day.findOne({
-    _id: id
+    number: dayNumber
   }).then(function(day) {
     if (instance === "hotel") {
       day.remove("hotel");

@@ -11,6 +11,14 @@ var daysModule = (function() {
     currentDay = days[0];
 
   function addDay() {
+    var curDay = $('.current-day').text();
+    curDay = Number(curDay);
+    curDay++;
+    $.ajax({
+      method: 'POST',
+      url: 'api/days',
+      data: {number: curDay}
+    });
     days.push({
       hotels: [],
       restaurants: [],
@@ -33,6 +41,12 @@ var daysModule = (function() {
   function removeCurrentDay() {
     if (days.length === 1) return;
     var index = days.indexOf(currentDay);
+    var curDay = $('.current-day').text();
+    $.ajax({
+      method: 'delete',
+      url: 'api/days/' + curDay,
+
+    })
     days.splice(index, 1);
     switchDay(index);
   }

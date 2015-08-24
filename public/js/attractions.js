@@ -21,18 +21,24 @@ $(document).ready(function() {
     return selected;
   }
 
+
   $('#attraction-select').on('click', 'button', function() {
     var $button = $(this),
       type = $button.data('type'),
       attractions = attractionsByType[type],
       id = $button.siblings('select').val();
     var findBy = findByTypeAndId(type, id);
-    var removeLastChar = type.split("").slice(0, type.length - 1).join(
+    if (type === "hotels"){
+    type = type.split("").slice(0, type.length - 1).join(
       "");
+    }
+    var currentDay = $('.current-day').text();
+    console.log("this is the current day" + currentDay);
+
     $.ajax({
       method: 'POST',
-      url: 'api/days/' + findBy._id + '/' + removeLastChar + '/' +
-        findBy.name
+      url: 'api/days/' + currentDay + '/' + type + '/' +
+        id
     });
     daysModule.addAttraction(findBy);
   });
